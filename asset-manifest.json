@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/hanna-crud/static/css/main.666dbd63.css",
+    "main.js": "/hanna-crud/static/js/main.9f98b192.js",
+    "static/js/787.a9120f67.chunk.js": "/hanna-crud/static/js/787.a9120f67.chunk.js",
+    "index.html": "/hanna-crud/index.html",
+    "main.666dbd63.css.map": "/hanna-crud/static/css/main.666dbd63.css.map",
+    "main.9f98b192.js.map": "/hanna-crud/static/js/main.9f98b192.js.map",
+    "787.a9120f67.chunk.js.map": "/hanna-crud/static/js/787.a9120f67.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.666dbd63.css",
+    "static/js/main.9f98b192.js"
+  ]
+}
