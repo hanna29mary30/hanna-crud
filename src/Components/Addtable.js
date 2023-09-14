@@ -21,15 +21,18 @@ const keys= Object.keys(details[0])
 
 
 
- const Search=(val)=>{
- setSearchval(val)
- console.log(searchval)
- const searcheddata = custdata.filter(f => f.first_name.toLowerCase().includes(searchval))
- console.log(searcheddata)
- setSearch(searcheddata)
- setdata(search)
- }
- 
+  const Search=(val)=>{
+   if(val != ""){
+     setSearchval(val);
+      const searcheddata = custdata.filter(f => f.first_name.toLowerCase().includes(searchval))
+     setSearch(searcheddata)
+     setdata(search)
+    }
+    else{
+     setdata(custdata)
+    }
+  }
+
  const Addrow = () => {
   const data = { id:custdata.length +1,
   email: "",
@@ -152,19 +155,19 @@ const Updaterow = (data) => {
 return(
   
     <div className="table-responsive">
-   <div>
-      <nav className="navbar navbar-expand-lg navbar-light bg-dark">
-    <a className="navbar-brand text-light" href="#">Customer Details Management</a>
-    <div className="mr-auto"> 
-      <input className="form-control"  id="searchinput" type="search" placeholder="Search" aria-label="Search"  onChange={(e)=>Search(e.target.value)} />
+   <div className="mr-auto">
+      <nav className="navbar navbar-expand-lg navbar-light bg-dark justify-content-between">
+    <a className="navbar-brand text-light" href="#">   Customer Details Management   </a>
+  <div className="nav navbar-nav ml-auto"> 
+      <input className="form-control" value={searchval} id="searchinput" type="search " placeholder="Search using first name" aria-label="Search"  onChange={(e)=>Search(e.target.value)} />
   </div>
   </nav> 
 </div>
 
-      
+      <div className="table-resposive p-3 m-2">
       <h3 className="text-center">Customer Details</h3>
       <button type="button" className="btn btn-primary m-3 p-2" onClick={() => Addrow()}>Add New Customers</button>
-      <table className="table table-bordered table-hover table-striped">
+      <table className="table table-bordered table-hover table-striped ">
         <thead className="table table-dark">
         <tr>
             <th>ID</th>
@@ -208,7 +211,7 @@ return(
     />
     </div>
   </div>
-      
+   </div>   
   
   );
   function prePage() {
