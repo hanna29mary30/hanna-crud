@@ -2,7 +2,7 @@ import './App.css';
 import Fileimport from './Components/Fileimport';
 import Test from './Components/Test';
 import React, { Component } from 'react';
-import Edit from './Components/Edit';
+
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 class App extends Component {

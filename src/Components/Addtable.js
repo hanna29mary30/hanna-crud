@@ -1,20 +1,34 @@
 import React,{useState} from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Messagebox from "./Messagebox";
-import Edit from "./Edit"
-import { Link } from 'react-router-dom';
+import Pagination from './Pagination';
 import Swal from "sweetalert2";
-function Addtable({details}){
 
+
+function Addtable({details}){
 const[custdata,setdata] = React.useState(details)
+const[CurrentPage,setCurrentPage] = useState(1);
+const[searchval,setSearchval] = useState();
 const[search,setSearch] = useState(custdata);
 const[value,setupdatedrow]=useState();
-const[data,setadddata]=useState();
+const recordPerPage = 8;
+const lastIndex = CurrentPage * recordPerPage;
+const firstIndex = lastIndex - recordPerPage;
+const records = details.slice(firstIndex,lastIndex);
+const pages = Math.ceil(details.length/recordPerPage);
+const numbers = [...Array(pages+1).keys()].slice(1)
 const keys= Object.keys(details[0])
 
-//  const Search = (event) = {
-//   setSearch(custdata.filter(f => f.first_name.includes(event.target.value)))
-// }
+
+
+ const Search=(val)=>{
+ setSearchval(val)
+ console.log(searchval)
+ const searcheddata = custdata.filter(f => f.first_name.toLowerCase().includes(searchval))
+ console.log(searcheddata)
+ setSearch(searcheddata)
+ setdata(search)
+ }
  
  const Addrow = () => {
   const data = { id:custdata.length +1,
@@ -57,21 +71,31 @@ const keys= Object.keys(details[0])
           data.latitude=newlatitude;
           data.longitude=newlongitude;
           data.created_at=formattedTime;
+          Swal.fire({
+            title: 'Success',
+            text: 'Customer has been added',
+            icon: 'success',
+        });
           const newdata = [...custdata, data];
           setdata(newdata);
-          
-          
           }
   });
 }
   
- function deleterow(id) {
-    const updatedData = custdata.filter(item=>(item.id!=id));
+ function deleterow(id) { 
+  Swal.fire({
+    title: 'Are you sure?',
+    icon:"error",
+    type: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'Yes, delete it!'
+}).then((result) => {
+  const updatedData = custdata.filter(item=>(item.id!=id));
     setdata(updatedData);
-    console.log(updatedData);
-    // <Messagebox name = "Row Deleted"/> 
-  }
-  
+  })
+}
 
 const Updaterow = (data) => {
   const email = data.email;
@@ -113,6 +137,11 @@ const Updaterow = (data) => {
           data.latitude=newlatitude;
           data.longitude=newlongitude;
           data.updated_at=formattedTime;
+          Swal.fire({
+            title: 'Success',
+            text: 'Data has been updated!',
+            icon: 'success',
+        });
           setupdatedrow(data)
           
           
@@ -122,17 +151,15 @@ const Updaterow = (data) => {
 
 return(
   
-    <div className="table-responsive p-2 border">
-      {/* <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" href="#">Customer Details Management</a>
-    <div class="ml-auto"> 
-      <form class="form-inline">
-        <input class="form-control mr-4" type="search" placeholder="Search" aria-label="Search" />
-        <button class="btn btn-outline-success mr-2" type="submit" onClick={()=>Search()}>Search</button>
-      </form>
-    </div>
-  </nav> */}
-
+    <div className="table-responsive">
+   <div>
+      <nav className="navbar navbar-expand-lg navbar-light bg-dark">
+    <a className="navbar-brand text-light" href="#">Customer Details Management</a>
+    <div className="mr-auto"> 
+      <input className="form-control"  id="searchinput" type="search" placeholder="Search" aria-label="Search"  onChange={(e)=>Search(e.target.value)} />
+  </div>
+  </nav> 
+</div>
 
       
       <h3 className="text-center">Customer Details</h3>
@@ -140,15 +167,22 @@ return(
       <table className="table table-bordered table-hover table-striped">
         <thead className="table table-dark">
         <tr>
-             { keys.map((k) => (
-              <th key={k}>{k}</th>
-            ))}
-          </tr>
+            <th>ID</th>
+            <th>Email</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>IP</th>
+            <th>Latitude</th>
+            <th>Longitude</th>
+            <th>Created at</th>
+            <th>Updated at</th>
+            <th colSpan={2}>Actions</th>
+        </tr>
         </thead> 
         <tbody>
        
          {
-           custdata.map((item,index)=>
+           records.map((item,index)=>
            <tr key={item.id}>
              {
                keys.map((k,index)=>
@@ -156,8 +190,7 @@ return(
               }
                
           <td>
-            
-           <button type="index" id= {index} className="btn btn-primary" onClick={() =>Updaterow(item)}>Edit</button> 
+            <button type="index" id= {index } className="btn btn-primary" onClick={() =>Updaterow(item)}>Edit</button> 
           </td>
           
           <td> <button type="button" id = {index} className="btn btn-danger" onClick={() => deleterow(index+1)}>Delete</button></td>
@@ -165,9 +198,33 @@ return(
           </tr>)
           
          }
-      </tbody>
+      </tbody> 
       </table>
-      </div>
+    <div className="d-flex justify-content-center">
+      <Pagination
+      currentPage={CurrentPage}
+      totalPages={pages}
+      onPageChange={changeCPage}
+    />
+    </div>
+  </div>
+      
+  
   );
+  function prePage() {
+    if (CurrentPage !== 1) {
+      setCurrentPage(CurrentPage - 1);
+    }
+  }
+  
+  function nextPage() {
+    if (CurrentPage < pages) {
+      setCurrentPage(CurrentPage + 1);
+    }
+  }
+  
+  function changeCPage(id) {
+    setCurrentPage(id);
+  }
 }
 export default Addtable;
