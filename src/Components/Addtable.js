@@ -14,8 +14,8 @@ const[value,setupdatedrow]=useState();
 const recordPerPage = 8;
 const lastIndex = CurrentPage * recordPerPage;
 const firstIndex = lastIndex - recordPerPage;
-const records = details.slice(firstIndex,lastIndex);
-const pages = Math.ceil(details.length/recordPerPage);
+const records = custdata.slice(firstIndex,lastIndex);
+const pages = Math.ceil(custdata.length/recordPerPage);
 const numbers = [...Array(pages+1).keys()].slice(1)
 const keys= Object.keys(details[0])
 
@@ -193,7 +193,7 @@ return(
             <button type="index" id= {index } className="btn btn-primary" onClick={() =>Updaterow(item)}>Edit</button> 
           </td>
           
-          <td> <button type="button" id = {index} className="btn btn-danger" onClick={() => deleterow(index+1)}>Delete</button></td>
+          <td> <button type="button" id = {index} className="btn btn-danger" onClick={() => deleterow(item.id)}>Delete</button></td>
           
           </tr>)
           
