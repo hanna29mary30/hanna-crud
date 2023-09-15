@@ -22,15 +22,20 @@ const keys= Object.keys(details[0])
 
 
   const Search=(val)=>{
-   if(val != ""){
-     setSearchval(val);
+    setSearchval(val);
+    if(val != ""){
+     console.log(searchval)
       const searcheddata = custdata.filter(f => f.first_name.toLowerCase().includes(searchval))
+      console.log(searcheddata)
      setSearch(searcheddata)
      setdata(search)
     }
     else{
-     setdata(custdata)
+    
+    // setSearch(details)
+    setdata(details)
     }
+    
   }
 
  const Addrow = () => {
@@ -156,9 +161,9 @@ return(
   
     <div className="table-responsive">
    <div className="mr-auto">
-      <nav className="navbar navbar-expand-lg navbar-light bg-dark justify-content-between">
-    <a className="navbar-brand text-light" href="#">   Customer Details Management   </a>
-  <div className="nav navbar-nav ml-auto"> 
+    <nav className="navbar navbar-expand-lg navbar-light bg-dark justify-content-between">
+    <a className="navbar-brand text-light" href="#">Customer Details Management</a>
+  <div> 
       <input className="form-control" value={searchval} id="searchinput" type="search " placeholder="Search using first name" aria-label="Search"  onChange={(e)=>Search(e.target.value)} />
   </div>
   </nav> 
@@ -214,18 +219,7 @@ return(
    </div>   
   
   );
-  function prePage() {
-    if (CurrentPage !== 1) {
-      setCurrentPage(CurrentPage - 1);
-    }
-  }
-  
-  function nextPage() {
-    if (CurrentPage < pages) {
-      setCurrentPage(CurrentPage + 1);
-    }
-  }
-  
+
   function changeCPage(id) {
     setCurrentPage(id);
   }
